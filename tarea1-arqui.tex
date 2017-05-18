@@ -1,0 +1,277 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[top=2.0cm, bottom=3cm, left=2.0cm, right=2.0cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{varioref}
+\usepackage[activeacute, spanish, es-tabla]{babel}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{ae,aecompl}
+\usepackage{amssymb,amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{askmaps}
+\pagestyle{fancy} 
+\pagenumbering{arabic} 
+\renewcommand{\headrulewidth}{0pt} 
+\setlength{\headsep}{20pt} 
+\setlength{\headheight}{65pt} 
+\setlength{\textheight}{600pt} 
+\setlength{\columnsep}{15pt} 
+\newcommand{\universidad}{\small{Universidad Técnica Federico Santa María}}
+\newcommand{\campus}{\small{Campus Santiago San Joaquín}}
+
+% Definiciones de Título e Integrantes de Experiencia
+\newcommand{\titulo}{Informe Tarea 1 \\ Arquitectura y Organización de Computadores}
+\newcommand{\integrantes}{\begin{tabular}{c}
+Juan Pablo Jorquera  201573533-6 \\
+\end{tabular}}
+
+\renewcommand{\maketitle}
+{
+\thispagestyle{fancy}
+\begin{center}
+\begin{Large}
+\textbf{\titulo}\\
+\end{Large}
+\end{center}
+\vspace{0.3cm}
+}
+
+
+%ENCABEZADO
+
+\fancyhead[R]{\begin{minipage}[b]{0.405\textwidth}
+\begin{center}
+\universidad \\ 
+\campus \\ 
+\integrantes
+\end{center}
+\end{minipage}}
+\fancyhead[L]{\vspace{15pt}\includegraphics[height=1.6cm]{Escudo.png}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                              %
+% AQUI TERMINAN LAS DEFINICIONES DE ENCABEZADO %
+% Y EMPIEZA EL CUERPO DEL DOCUMENTO            %
+%                                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\setcounter{secnumdepth}{0}
+\maketitle
+\section{Codificación por `2'}
+Para la realización del circuito se comenzó por hacer la codificación en orden correspondiente de los caracteres hexadecimales, para así poder seguir trabajando en base a ésta, en ella se dividió cada caracter hexadecimal en sus dígitos $D_0$ a $D_3$ en binario y se códifico cada caracter según la clave, en el orden de ésta:
+\begin{center}
+\subsection{Tabla de Codificación por `2'}
+\vspace{0.2cm}
+ \begin{tabular}{lr}
+  \begin{tabular}[t]{r|r|cccc|cccc}
+	Caracter&Término&$D_3$&$D_2$&$D_1$&$D_0$&$d_3$&$d_2$&$d_1$&$d_0$\\
+	\hline
+	0&0&0&0&0&0&		0&0&1&0\\
+	1&1&0&0&0&1&		0&0&1&1\\
+	2&2&0&0&1&0&		0&1&0&0\\
+	3&3&0&0&1&1&		0&1&0&1\\
+	4&4&0&1&0&0&		0&1&1&0\\
+	5&5&0&1&0&1&		0&1&1&1\\
+	6&6&0&1&1&0&		1&0&0&0\\
+	7&7&0&1&1&1&		1&0&0&1\\
+	8&8&1&0&0&0&		1&0&1&0\\
+	9&9&1&0&0&1&		1&0&1&1\\
+	A&10&1&0&1&0&		1&1&0&0\\
+	B&11&1&0&1&1&		1&1&0&1\\
+	C&12&1&1&0&0&		1&1&1&0\\
+	D&13&1&1&0&1&		1&1&1&1\\
+	E&14&1&1&1&0&		0&0&0&0\\
+	F&15&1&1&1&1&		0&0&0&1\\
+  \end{tabular}
+  \end{tabular}
+\end{center}
+\vspace{0.2cm}
+En primer lugar se ve inmediatamente que el primer dígito $D_0$ no varía, por lo que la función sale inmediatamente ($d_0 = D_0$). De forma análoga sucede para $D_1$, pero con la negación: $d_1 = \overline{D_1}$. Por lo que la salida para ambos dígitos estaría lista y faltaría trabajar con $D_2$ y $D_3$. Si nos fijamos, no es tan simple visualizar el circuito para $D_2$, por lo que recurrimos al mapa de Karnaugh para obtener $d_2$ y $d_3$.
+\begin{center}
+\subsection{Mapas de Karnaugh para $d_2$ y $d_3$}
+\vspace{0.2cm}
+\askmap{4}{$d_2$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{0011110000111100}%
+{%
+\put(0,1){\oval(1.9,1.9)[r]}
+\put(4,1){\oval(1.9,1.9)[l]}
+\put(2,3){\oval(1.9,1.9)}
+}
+\askmap{4}{$d_3$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{0000001111111100}%
+{%
+\put(1.5,1){\oval(0.9,1.9)}
+\put(3.5,2){\oval(0.8,3.9)}
+\put(3,3){\oval(1.9,1.9)}
+}
+\end{center}
+\vspace{0.2cm}
+
+Entonces las funciones son respectivamente: $d_2 = D_2\overline{D_1}+\overline{D_2}D_1$ y $d_3 = D_3\overline{D_1}+\overline{D_3}D_2D_1+D_3\overline{D_2}$.
+\vspace{0.2cm}
+\section{Codificación por `4'}
+Luego seguimos con la tabla para la codificación para la clave `4'.
+
+\begin{center}
+\subsection{Tabla de Codificación por `4'}
+\vspace{0.2cm}
+ \begin{tabular}{lr}
+  \begin{tabular}[t]{r|r|cccc|cccc}
+	Caracter&Término&$D_3$&$D_2$&$D_1$&$D_0$&$d_3$&$d_2$&$d_1$&$d_0$\\
+	\hline
+	0&0&0&0&0&0&		0&1&0&0\\
+	1&1&0&0&0&1&		0&1&0&1\\
+	2&2&0&0&1&0&		0&1&1&0\\
+	3&3&0&0&1&1&		0&1&1&1\\
+	4&4&0&1&0&0&		1&0&0&0\\
+	5&5&0&1&0&1&		1&0&0&1\\
+	6&6&0&1&1&0&		1&0&1&0\\
+	7&7&0&1&1&1&		1&0&1&1\\
+	8&8&1&0&0&0&		1&1&0&0\\
+	9&9&1&0&0&1&		1&1&0&1\\
+	A&10&1&0&1&0&		1&1&1&0\\
+	B&11&1&0&1&1&		1&1&1&1\\
+	C&12&1&1&0&0&		0&0&0&0\\
+	D&13&1&1&0&1&		0&0&0&1\\
+	E&14&1&1&1&0&		0&0&1&0\\
+	F&15&1&1&1&1&		0&0&1&1\\
+  \end{tabular}
+  \end{tabular}
+\end{center}
+\vspace{0.2cm}
+
+Concluimos inmediatamente:
+\begin{itemize}
+	\item{$d_0 = D_0$}
+	\item{$d_1 = D_1$}
+	\item{$d_2 = \overline{D_2}$}
+\end{itemize}
+Y para $d_3$ realizamos el mapa Karnaugh.
+\begin{center}
+\subsection{Mapa de Karnaugh para $d_3$}
+\vspace{0.2cm}
+\askmap{4}{$d_3$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{0000111111110000}%
+{%
+\put(1.5,2){\oval(0.8,3.9)}
+\put(3.5,2){\oval(0.8,3.9)}
+}
+\end{center}
+
+Entonces obtenemos la última función: $d_3 = \overline{D_3}D_2+D_3\overline{D_2}$ .
+
+\section{Codificación por `5'}
+Finalmente, para terminar la parte de codificación hacemos el mismo proceso para cuando la clave sea '5'.
+\begin{center}
+\subsection{Tabla de Codificación por `5'}
+\vspace{0.2cm}
+ \begin{tabular}{lr}
+  \begin{tabular}[t]{r|r|cccc|cccc}
+	Caracter&Término&$D_3$&$D_2$&$D_1$&$D_0$&$d_3$&$d_2$&$d_1$&$d_0$\\
+	\hline
+	0&0&0&0&0&0&		0&1&0&1\\
+	1&1&0&0&0&1&		0&1&1&0\\
+	2&2&0&0&1&0&		0&1&1&1\\
+	3&3&0&0&1&1&		1&0&0&0\\
+	4&4&0&1&0&0&		1&0&0&1\\
+	5&5&0&1&0&1&		1&0&1&0\\
+	6&6&0&1&1&0&		1&0&1&1\\
+	7&7&0&1&1&1&		1&1&0&0\\
+	8&8&1&0&0&0&		1&1&0&1\\
+	9&9&1&0&0&1&		1&1&1&0\\
+	A&10&1&0&1&0&		1&1&1&1\\
+	B&11&1&0&1&1&		0&0&0&0\\
+	C&12&1&1&0&0&		0&0&0&1\\
+	D&13&1&1&0&1&		0&0&1&0\\
+	E&14&1&1&1&0&		0&0&1&1\\
+	F&15&1&1&1&1&		0&1&0&0\\
+  \end{tabular}
+  \end{tabular}
+\end{center}
+\vspace{0.2cm}
+
+Luego $d_0 = \overline{D_0}$ y usamos Karnaugh para minimizar el resto:
+\begin{center}
+\subsection{Mapas de Karnaugh para $d_1$, $d_2$ y $d_3$}
+\vspace{0.2cm}
+\askmap{4}{$d_1$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{0110011001100110}%
+{%
+\put(2,2.5){\oval(3.9,0.8)}
+\put(2,0.5){\oval(3.9,0.8)}
+}
+\askmap{4}{$d_2$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{1110000111100001}%
+{%
+\put(2,1.5){\oval(1.9,0.8)}
+\put(0,3){\oval(1.9,1.9)[r]}
+\put(4,3){\oval(1.9,1.9)[l]}
+\put(4,0){\oval(1.8,1.8)[tl]}
+\put(0,0){\oval(1.8,1.8)[tr]}
+\put(4,4){\oval(1.8,1.8)[bl]}
+\put(0,4){\oval(1.8,1.8)[br]}
+}
+\end{center}
+\vspace{0.1cm}
+\begin{center}
+\askmap{4}{$d_3$}{{$D_3$}{$D_2$}{$D_1$}{$D_0$}}%
+{0001111111100000}%
+{%
+\put(1,1.5){\oval(1.9,0.8)}
+\put(1.5,2){\oval(0.8,3.9)}
+\put(3.5,3){\oval(0.8,1.9)}
+\put(4,0){\oval(1.8,1.8)[tl]}
+\put(4,4){\oval(1.8,1.8)[bl]}
+}
+\end{center}
+
+De donde obtenemos las funciones:
+\begin{itemize}
+	\item{$d_1 = \overline{D_1}D_0+D_1\overline{D_0}$}
+	\item{$d_2 = \overline{D_2}\hspace{0.1cm}\overline{D_1}+D_2D_1D_0+\overline{D_2}\hspace{0.1cm}\overline{D_0}$}
+	\item{$d_3 = \overline{D_3}D_2+\overline{D_3}D_1D_0+D_3\overline{D_2}\hspace{0.1cm}\overline{D_0}+D_3\overline{D_2}\hspace{0.1cm}\overline{D_1}$}
+\end{itemize}
+\newpage
+\vspace{0.2cm}
+\section{Construcción del Circuito}
+
+Primero para construir el circuito recapitularemos las funciones que tenemos de forma ordenada:
+\subsection{Cifrado por `2'}
+\begin{itemize}
+	\item{$d_0 = D_0$}
+	\item{$d_1 = \overline{D_1}$}
+	\item{$d_2 = D_2\overline{D_1}+\overline{D_2}D_1$}
+	\item{$d_3 = D_3\overline{D_1}+\overline{D_3}D_2D_1+D_3\overline{D_2}$}
+\end{itemize}
+\subsection{Cifrado por `4'}
+\begin{itemize}
+	\item{$d_0 = D_0$}
+	\item{$d_1 = D_1$}
+	\item{$d_2 = \overline{D_2}$}
+	\item{$d_3 = \overline{D_3}D_2+D_3\overline{D_2}$}
+\end{itemize}
+\subsection{Cifrado por `5'}
+\begin{itemize}
+	\item{$d_0 = \overline{D_0}$}
+	\item{$d_1 = \overline{D_1}D_0+D_1\overline{D_0}$}
+	\item{$d_2 = \overline{D_2}\hspace{0.1cm}\overline{D_1}+D_2D_1D_0+\overline{D_2}\hspace{0.1cm}\overline{D_0}$}
+	\item{$d_3 = \overline{D_3}D_2+\overline{D_3}D_1D_0+D_3\overline{D_2}\hspace{0.1cm}\overline{D_0}+D_3\overline{D_2}\hspace{0.1cm}\overline{D_1}$}
+\end{itemize}
+
+Notamos que las funciones de la forma: $A\overline{B}+ \overline{A}B$ equivalen simplemente a la representación de un $XOR$.
+\vspace{0.2cm}
+
+En segundo lugar, como la clave se distribuye de forma cíclica sobre la palabra y se tienen palabras de cuatro y ocho caracteres, la construcción de los circuitos corresponde a un subcircuito para cada clave (2, 4 y 5) y la repetición de éstos según sea necesario.
+\vspace{0.2cm}
+
+Por otro lado como el input y output deben ser una palabra de cuatro y ocho dígitos hexadecimales, se utilizó un PIN de 16 y 32 bits respectivamente para representar dicha palabra en binario, donde cada 4 bits se representa un caracter ordenadamente de izquierda a derecha y de arriba hacia abajo. Luego se utilizó un splitter para distribuir los bits correspondientes a cada caracter sobre los subcircuitos adecuados, de forma ordenada, de tal modo que los caracteres también están distribuidos de izquierda a derecha sobre los subcircuitos. Análogamente se aplica el proceso para el output. Además, hacia las entradas y salidas de los subcircuitos se incluyó un Display de 7 Segmentos, para facilitar la visualización en hexadecimal de cada caracter a codificar o ya codificados.
+
+\vspace{0.2cm}
+\section{Extra}
+Para ello se toman ambos inputs (la palabra y la clave), de ser necesario se deben transformar a binario, y se hacen pasar por un circuito sumador para que así el resultado sea el caracter codificado, es importante tener en cuenta que el Carry Out es lo que se debe ignorar para simplemente para emular el módulo que se realiza en el cifrado. Finalmente, como el resultado está en binario, bastaría transformar a hexadecimal de vuelta si así se requiere.
+
+
+\end{document}
